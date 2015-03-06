@@ -1,0 +1,90 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0
+xmax = 5.398625
+tiers? <exists>
+size = 1
+item []:
+	item [1]:
+		class = "IntervalTier"
+		name = "p-center"
+		xmin = 0
+		xmax = 5.398625
+		intervals: size = 19
+		intervals [1]:
+			xmin = 0.000000
+			xmax = 0.136813
+			text = "X"
+		intervals [2]:
+			xmin = 0.136813
+			xmax = 0.441312
+			text = "X"
+		intervals [3]:
+			xmin = 0.441312
+			xmax = 0.749125
+			text = "X"
+		intervals [4]:
+			xmin = 0.749125
+			xmax = 0.888750
+			text = "X"
+		intervals [5]:
+			xmin = 0.888750
+			xmax = 1.166937
+			text = "X"
+		intervals [6]:
+			xmin = 1.166937
+			xmax = 1.548125
+			text = "X"
+		intervals [7]:
+			xmin = 1.548125
+			xmax = 1.867938
+			text = "X"
+		intervals [8]:
+			xmin = 1.867938
+			xmax = 2.140875
+			text = "X"
+		intervals [9]:
+			xmin = 2.140875
+			xmax = 2.365438
+			text = "X"
+		intervals [10]:
+			xmin = 2.365438
+			xmax = 2.539438
+			text = "X"
+		intervals [11]:
+			xmin = 2.539438
+			xmax = 2.999000
+			text = "X"
+		intervals [12]:
+			xmin = 2.999000
+			xmax = 3.284813
+			text = "X"
+		intervals [13]:
+			xmin = 3.284813
+			xmax = 3.671562
+			text = "X"
+		intervals [14]:
+			xmin = 3.671562
+			xmax = 3.930938
+			text = "X"
+		intervals [15]:
+			xmin = 3.930938
+			xmax = 4.446313
+			text = "X"
+		intervals [16]:
+			xmin = 4.446313
+			xmax = 4.744250
+			text = "X"
+		intervals [17]:
+			xmin = 4.744250
+			xmax = 4.962125
+			text = "X"
+		intervals [18]:
+			xmin = 4.962125
+			xmax = 5.105688
+			text = "X"
+		intervals [19]:
+			xmin = 5.105688
+			xmax = 5.398625
+			text = "X"

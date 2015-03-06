@@ -1,0 +1,74 @@
+File type = "ooTextFile"
+Object class = "TextGrid"
+
+xmin = 0
+xmax = 8.440861678004536
+tiers? <exists>
+size = 1
+item []:
+	item [1]:
+		class = "IntervalTier"
+		name = "p-center"
+		xmin = 0
+		xmax = 8.440861678004536
+		intervals: size = 15
+		intervals [1]:
+			xmin = 0
+			xmax = 0.284430839002268
+			text = "b"
+		intervals [2]:
+			xmin = 0.284430839002268
+			xmax = 0.796430839002268
+			text = "b"
+		intervals [3]:
+			xmin = 0.796430839002268
+			xmax = 1.53243083900227
+			text = "b"
+		intervals [4]:
+			xmin = 1.53243083900227
+			xmax = 1.70843083900227
+			text = "b"
+		intervals [5]:
+			xmin = 1.70843083900227
+			xmax = 2.44443083900227
+			text = "b"
+		intervals [6]:
+			xmin = 2.44443083900227
+			xmax = 3.22843083900227
+			text = "b"
+		intervals [7]:
+			xmin = 3.22843083900227
+			xmax = 3.99643083900227
+			text = "b"
+		intervals [8]:
+			xmin = 3.99643083900227
+			xmax = 4.84443083900227
+			text = "b"
+		intervals [9]:
+			xmin = 4.84443083900227
+			xmax = 5.48443083900227
+			text = "b"
+		intervals [10]:
+			xmin = 5.48443083900227
+			xmax = 5.67643083900227
+			text = "b"
+		intervals [11]:
+			xmin = 5.67643083900227
+			xmax = 6.31643083900227
+			text = "b"
+		intervals [12]:
+			xmin = 6.31643083900227
+			xmax = 6.52443083900227
+			text = "b"
+		intervals [13]:
+			xmin = 6.52443083900227
+			xmax = 7.13243083900227
+			text = "b"
+		intervals [14]:
+			xmin = 7.13243083900227
+			xmax = 7.91643083900227
+			text = "b"
+		intervals [15]:
+			xmin = 7.91643083900227
+			xmax = 8.440861678004536
+			text = "b"
