@@ -1,3 +1,4 @@
 
 
 beat_find -> Beat extraction from speech wav files.
+phoneme_duration -> phoneme duration calculation for aix-genoa2 data
