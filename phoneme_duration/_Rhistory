@@ -1,0 +1,512 @@
+tw[i] <- target_word
+target_data <- data[data$ortho == tw[i],]
+tw_p[i] <- as.character(target_data$syll)
+tw_frequlemfilms2[i] <- as.character(target_data$freqlemfilms2)
+target_word_onset_cv <- as.character(target_data$onset_CV)
+target_word_final_cv <- as.character(target_data$final_CV)
+dis_word <- data[(data$onset_CV != target_word_onset_cv & data$final_CV != target_word_final_cv), ]
+dis_word <- dis_word[sample(nrow(dis_word),1),]
+dw[i] <- as.character(dis_word$ortho[1])
+dw_p[i] <- as.character(dis_word$syll[1])
+print(paste(i,target_word))
+#   plot(density(onset_total_freq$freq_onset_CV))
+#   Sys.sleep(1)
+}
+write.table(data.frame(tw,tw_p,tw_frequlemfilms2,dw,dw_p), name, sep=",",row.names=FALSE,
+col.names=c("target","target_p","frequlemfilms2","distractor","distractor_p"),quote = FALSE)
+}
+load("Lexique380_noDuplicate.RData")
+load("~/dominnos/Lexique380_noDuplicate.RData")
+#######
+# gathereing all unique onset syllables and their frequencys
+onset_total <- data.frame(data$onset_CV, data$freq_onset_CV)
+onset_total <- unique(onset_total)
+names(onset_total) <- c("onset_CV","freq_onset_CV")
+for (kk in 1:length(onset_total[,1])) {
+# Now start building up the domino chain...
+onset_CV <- as.character(onset_total$onset_CV[kk])
+name <- paste('chains/',onset_CV,'.txt',sep="")
+# Now start building up the domino chain...
+n_dominoes <- 2000
+#######
+target_word = ""
+tw <- vector("character",n_dominoes)
+tw[1] <- target_word
+tw_frequlemfilms2 <- vector("character",n_dominoes)
+dw <- vector("character",n_dominoes)
+dw[1] <- ""
+tw_p <- vector("character",n_dominoes)
+tw_p[1] <- target_word
+dw_p <- vector("character",n_dominoes)
+dw_p[1] <- ""
+for (i in 2:n_dominoes) {
+# find Target Word
+target_word <- data[data$onset_CV == onset_CV,]
+# print(length(target_word$ortho))
+# do not pick a target word that has already been selected before
+for (j in 1:(i-1)) {
+target_word <- target_word[target_word$ortho != tw[j],]
+}
+# print(length(target_word$ortho))
+# Within the target_word set, pick one whose final syll also occurs in word-initial position
+final_CV <- target_word$final_CV[target_word$final_CV != onset_CV]
+final_CV <- as.character(final_CV)
+freq_onset_CV <- vector("numeric",length(final_CV))
+for (k in 1:length(final_CV)) {
+dummy <- data$freq_onset_CV[data$onset_CV == final_CV[k]]
+freq_onset_CV[k] <- dummy[1]
+}
+onset_CVs <- final_CV[!is.na(freq_onset_CV) & (freq_onset_CV > 1)]
+#print(length(onset_CV))
+if(length(onset_CVs) == 0){
+write.table(data.frame(tw,tw_p,tw_frequlemfilms2,dw,dw_p), name, sep=",",row.names=FALSE,
+col.names=c("target","target_p","frequlemfilms2","distractor","distractor_p"),quote = FALSE)
+break
+}
+# select maximum frequency syllable
+#onset_CV <- sample(onset_CVs,1)
+onset_total_freq <- onset_total[which(onset_total$onset_CV %in% onset_CVs),]
+onset_CV <- onset_total_freq[which(onset_total_freq$freq_onset_CV == max(onset_total_freq$freq_onset_CV)),]
+onset_CV <- as.character(onset_CV$onset_CV[1])
+target_word <- target_word[target_word$final_CV == onset_CV,]
+c_i <- order(target_word$freqlivres,decreasing=TRUE)
+target_word <- target_word[c_i,]
+target_word_onset_cv <- as.character(target_word$onset_CV[1])
+target_word <- as.character(target_word$ortho[1])
+# Done!
+tw[i] <- target_word
+target_data <- data[data$ortho == tw[i],]
+tw_p[i] <- as.character(target_data$syll)
+tw_frequlemfilms2[i] <- as.character(target_data$freqlemfilms2)
+target_word_onset_cv <- as.character(target_data$onset_CV)
+target_word_final_cv <- as.character(target_data$final_CV)
+dis_word <- data[(data$onset_CV != target_word_onset_cv & data$final_CV != target_word_final_cv), ]
+dis_word <- dis_word[sample(nrow(dis_word),1),]
+dw[i] <- as.character(dis_word$ortho[1])
+dw_p[i] <- as.character(dis_word$syll[1])
+print(paste(i,target_word))
+#   plot(density(onset_total_freq$freq_onset_CV))
+#   Sys.sleep(1)
+}
+write.table(data.frame(tw,tw_p,tw_frequlemfilms2,dw,dw_p), name, sep=",",row.names=FALSE,
+col.names=c("target","target_p","frequlemfilms2","distractor","distractor_p"),quote = FALSE)
+}
+write.table(data.frame(tw,tw_p,tw_frequlemfilms2,dw,dw_p), name, sep=",",row.names=FALSE,
+col.names=c("target","target_p","frequlemfilms2","distractor","distractor_p"),quote = FALSE)
+setwd("C:/Users/mukherjee/Desktop/noel_poster/data_analysis/phoneme_duration")
+data <- read.csv("aix.csv")
+data <- read.csv("data/aix.csv")
+View(data)
+names(data) <- c("trial","start","end","phon")
+View(data)
+c_i <- order(data$trial,decreasing=TRUE)
+data <- data[c_i,]
+View(data)
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+data <- read.csv("data/aix.csv")
+names(data) <- c("trial","start","end","phon")
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+a = subset(data,data$phon == 'a')
+View(a)
+dummy <- abs(nchar(as.character(data$end)) - nchar(as.character(data$start)))
+new_data <- data.frame(data,dummy)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+View(data)
+dummy <- abs(as.character(data$end)- as.character(data$start))
+data$end - data$start
+dummy <- abs(data$end- data$start)
+rm(list = ls())
+data <- read.csv("data/aix.csv")
+dummy <- abs(data$end- data$start)
+new_data <- data.frame(data,dummy)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+View(data)
+rm(list = ls())
+data <- read.csv("data/aix.csv")
+dummy <- abs(data$end- data$start)
+new_data <- data.frame(data,dummy)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+data <- read.csv("data/aix.csv")
+dummy <- abs(data$end- data$start)
+new_data <- data.frame(data,dummy)
+dummy <- abs(data$end - data$start)
+dummy <- data$end - data$start
+View(data)
+rm(list = ls())
+data <- read.csv("data/aix.csv")
+names(data) <- c("trial","start","end","phon")
+dummy <- data$end - data$start
+new_data <- data.frame(data,dummy)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+View(data)
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+a = subset(data,data$phon == 'a')
+View(a)
+e = subset(data,data$phon == 'e')
+View(e)
+unique(data$phon)
+a = subset(data,data$phon == 'a')
+e = subset(data,data$phon == 'e')
+i = subset(data,data$phon == 'i')
+o = subset(data,data$phon == 'o')
+u = subset(data,data$phon == 'u')
+View(i)
+files <- list.files(path = "data/",full.names = TRUE)
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- data$end - data$start
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+a = subset(data,data$phon == 'a')
+e = subset(data,data$phon == 'e')
+i = subset(data,data$phon == 'i')
+o = subset(data,data$phon == 'o')
+u = subset(data,data$phon == 'u')
+}
+View(a)
+a = subset(c(data$trial,data$diff),data$phon == 'a')
+a = subset(data,data$phon == 'a')
+plot(a$diff)
+name <- files[i]
+i=1
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+vowel <- c("a","e","i","o","u")
+j=1
+vowel[j] = subset(data,data$phon == 'a')
+subset(data,data$phon == vowel[j])
+vowel <- c("a","e","i","o","u")
+subset(data,data$phon == vowel[j])
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- data$end - data$start
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,vowel[j],sep='')
+write.table(subset(data,data$phon == vowel[j]), name, sep=",",row.names=FALSE, col.names=c("trial","start","end","phon","diff"),quote = FALSE)
+}
+}
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- data$end - data$start
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+write.table(subset(data,data$phon == vowel[j]), name, sep=",",row.names=FALSE, col.names=c("trial","start","end","phon","diff"),quote = FALSE)
+}
+}
+dur = subset(data,data$phon == vowel[j])
+View(dur)
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+View(t_5)
+grepl(paste('005', collapse= "|")
+grepl(paste('005', collapse= "|"), dur$trial)
+grepl(paste('005', collapse= "|"), dur$trial)
+paste('005', collapse= "|")
+View(dur)
+grepl(paste('007', collapse= "|"), dur$trial)
+j=1
+dur = subset(data,data$phon == vowel[j])
+View(dur)
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+mean(t_5$diff)
+sd(t_5$diff)
+View(data)
+10e3
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+stat <- matrix()
+i=1
+j=2
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e7
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+View(data)
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+View(data)
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+mean(t_5$diff)
+sd(t_5$diff)
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+stat_mean <- []
+stat_std <- []
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+#   write.table(, name, sep=",",row.names=FALSE, col.names=c("trial","start","end","phon","diff"),quote = FALSE)
+}
+}
+stat_mean <- []
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+stat_mean <- NULL
+stat_std <- NULL
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+#   write.table(, name, sep=",",row.names=FALSE, col.names=c("trial","start","end","phon","diff"),quote = FALSE)
+}
+}
+stat_mean
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+stat_mean <- NULL
+stat_std <- NULL
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+#   write.table(, name, sep=",",row.names=FALSE, col.names=c("trial","start","end","phon","diff"),quote = FALSE)
+}
+}
+View(t_5)
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+stat_mean <- NULL
+stat_std <- NULL
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+write.table(data.frame(stat_mean,stat_std), name, sep=",",row.names=FALSE, col.names=c("mean","std"),quote = FALSE)
+}
+}
+View(data)
+i=1
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+View(data)
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+View(data)
+length(t_5$diff)
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+stat_mean <- NULL
+stat_std <- NULL
+stat_no <- NULL
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+stat_no <- c(stat_no,length(t_5$diff),length(t_6$diff),length(t_7$diff),length(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+write.table(data.frame(stat_mean,stat_std), name, sep=",",row.names=FALSE, col.names=c("mean","std"),quote = FALSE)
+}
+}
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+stat_mean <- NULL
+stat_std <- NULL
+stat_no <- NULL
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+stat_no <- c(stat_no,length(t_5$diff),length(t_6$diff),length(t_7$diff),length(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+write.table(data.frame(stat_mean,stat_std,stat_no), name, sep=",",row.names=FALSE, col.names=c("mean","std"),quote = FALSE)
+}
+}
+rm(list = ls())
+files <- list.files(path = "data/",full.names = TRUE)
+vowel <- c("a","e","i","o","u")
+for (i in 1:length(files)){
+data <- read.csv(files[i])
+names(data) <- c("trial","start","end","phon")
+new_data <- (data$end - data$start)/10e6
+new_data <- data.frame(data,new_data)
+names(new_data) <- c(names(data),"diff")
+data <- new_data
+c_i <- order(data$trial,decreasing=FALSE)
+data <- data[c_i,]
+for (j in 1:length(vowel)){
+stat_mean <- NULL
+stat_std <- NULL
+stat_no <- NULL
+dur = subset(data,data$phon == vowel[j])
+t_5 <- subset(dur, grepl(paste('005', collapse= "|"), dur$trial))
+t_6 <- subset(dur, grepl(paste('006', collapse= "|"), dur$trial))
+t_7 <- subset(dur, grepl(paste('007', collapse= "|"), dur$trial))
+t_8 <- subset(dur, grepl(paste('008', collapse= "|"), dur$trial))
+stat_mean <- c(stat_mean,mean(t_5$diff),mean(t_6$diff),mean(t_7$diff),mean(t_8$diff))
+stat_std <- c(stat_std,sd(t_5$diff),sd(t_6$diff),sd(t_7$diff),sd(t_8$diff))
+stat_no <- c(stat_no,length(t_5$diff),length(t_6$diff),length(t_7$diff),length(t_8$diff))
+name <- files[i]
+name <- gsub(".csv", "", name)
+name <- gsub("data/", "", name)
+name <- paste("output/",name,"_",vowel[j],sep='')
+write.table(data.frame(stat_mean,stat_std,stat_no), name, sep=",",row.names=FALSE, col.names=c("mean","std","No"),quote = FALSE)
+}
+}
